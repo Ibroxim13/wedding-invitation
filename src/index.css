@@ -1,0 +1,350 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom Properties ── */
+:root {
+  --gold:       #c9a84c;
+  --gold-light: #f2e0a8;
+  --gold-dark:  #8b6914;
+  --cream:      #faf7f2;
+  --cream-2:    #f5f0e8;
+  --ink:        #1a0f05;
+  --ink-mid:    #3d2e18;
+  --text:       #4a3520;
+  --text-soft:  #7a6248;
+}
+
+/* ── Base Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: var(--cream);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream-2); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ── Typography helpers ── */
+.font-display { font-family: 'Playfair Display', serif; }
+.font-script  { font-family: 'Great Vibes', cursive; }
+.font-body    { font-family: 'Cormorant Garamond', serif; }
+
+/* ── Gold divider ornament ── */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 4px;
+}
+.ornament::before,
+.ornament::after {
+  content: '';
+  flex: 1;
+  max-width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* ── Section divider ── */
+.section-divider {
+  width: 100%;
+  text-align: center;
+  margin: 2.5rem 0;
+  color: var(--gold);
+  font-size: 1.1rem;
+  letter-spacing: 8px;
+  opacity: 0.7;
+}
+
+/* ── Gold border card ── */
+.gold-card {
+  background: var(--cream);
+  border: 1px solid var(--gold);
+  position: relative;
+}
+.gold-card::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(201,168,76,0.3);
+  pointer-events: none;
+}
+
+/* ── Envelope styles ── */
+.envelope-body {
+  position: relative;
+  background: var(--cream);
+  border: 2px solid var(--gold);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.envelope-flap {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 55%;
+  background: linear-gradient(160deg, #ede4d4 0%, #f5f0e8 60%);
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  border-bottom: none;
+  z-index: 2;
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.envelope-flap.open {
+  transform: rotateX(180deg) translateY(-100%);
+}
+.envelope-fold-l {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 50%;
+  background: rgba(237,228,212,0.5);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  z-index: 1;
+}
+.envelope-fold-r {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 50%;
+  background: rgba(237,228,212,0.5);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  z-index: 1;
+}
+.envelope-fold-b {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 55%;
+  background: linear-gradient(0deg, #ede4d4 0%, transparent 100%);
+  clip-path: polygon(0 100%, 50% 0, 100% 100%);
+  z-index: 1;
+}
+
+/* ── Lock button ── */
+.lock-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.lock-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a84c, #8b6914);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: pulseGold 2s ease-in-out infinite;
+}
+.lock-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(201,168,76,0.6);
+}
+.lock-circle:active {
+  transform: scale(0.95);
+}
+
+/* ── Background pattern for overlay ── */
+.overlay-bg {
+  background-color: #140c04;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+}
+.overlay-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 18px,
+      rgba(201,168,76,0.03) 18px,
+      rgba(201,168,76,0.03) 19px
+    );
+  pointer-events: none;
+}
+
+/* ── Calendar ── */
+.calendar-day-event {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+}
+
+/* ── Countdown block ── */
+.countdown-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.countdown-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+.countdown-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+/* ── Animations ── */
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
+  50%       { box-shadow: 0 0 0 14px rgba(201,168,76,0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes envelopeAway {
+  0%   { transform: translateY(0)     scale(1);    opacity: 1; }
+  30%  { transform: translateY(-4vh)  scale(1.02); opacity: 1; }
+  100% { transform: translateY(-110vh) scale(0.92); opacity: 0; }
+}
+
+/* ── Delay utilities ── */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-800 { animation-delay: 0.8s; }
+
+/* ── Reveal animation utility ── */
+.reveal {
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards;
+}
+
+/* ── Gold text gradient ── */
+.gold-text {
+  background: linear-gradient(135deg, #e0c060 0%, #c9a84c 40%, #f2e0a8 70%, #c9a84c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Thin gold rule ── */
+.gold-rule {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 2rem auto;
+  width: 80%;
+  max-width: 300px;
+}
+
+/* ── Map link buttons ── */
+.map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border: 1px solid var(--gold);
+  color: var(--gold-dark);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+.map-btn:hover {
+  background: var(--gold);
+  color: var(--cream);
+  transform: translateY(-1px);
+}
+
+/* ── Copy button ── */
+.copy-btn {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  letter-spacing: 1.5px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.copy-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+.copy-btn:active { transform: scale(0.97); }
+
+/* ── Photo frame ── */
+.photo-frame {
+  position: relative;
+  display: inline-block;
+}
+.photo-frame::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border: 1px solid rgba(201,168,76,0.4);
+  pointer-events: none;
+}
+.photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border: 1px solid rgba(201,168,76,0.15);
+  pointer-events: none;
+}
+
+/* ── Language switcher ── */
+.lang-btn {
+  padding: 5px 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.lang-btn.active {
+  border-color: var(--gold);
+  color: var(--gold-dark);
+  background: rgba(201,168,76,0.08);
+}
+.lang-btn:not(.active) {
+  color: rgba(201,168,76,0.5);
+}
+.lang-btn:not(.active):hover {
+  color: var(--gold);
+}
