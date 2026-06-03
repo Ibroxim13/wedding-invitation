@@ -67,8 +67,8 @@ export default function VenueSection({ t }) {
 
         {/* ── Map buttons ── */}
         <div
-          className="reveal delay-300"
-          style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}
+          className="reveal delay-300 map-btn-group"
+          style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '360px', margin: '0 auto' }}
         >
           <a
             href={t.yandexUrl}

@@ -276,6 +276,7 @@ body {
 /* ── Map link buttons ── */
 .map-btn {
   display: inline-flex;
+  justify-content: center;
   align-items: center;
   gap: 8px;
   padding: 10px 24px;
@@ -347,4 +348,22 @@ body {
 }
 .lang-btn:not(.active):hover {
   color: var(--gold);
+}
+
+@media (min-width: 410px) {
+  .map-btn-group {
+    flex-direction: row !important;
+  }
+  .map-btn-group .map-btn {
+    flex: 1;
+    justify-content: center;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 500px) {
+  .img-ring{
+    width: 120px;
+    height: 80px;
+  }
 }

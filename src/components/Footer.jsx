@@ -55,7 +55,7 @@ export default function Footer({ t }) {
         Temurbek & Nodirabegim
       </p>
       <p className="flex items-center justify-center">
-         <img src={ring} alt="" className="w-100 h-60 object-contain mb-8"/>
+         <img src={ring} alt="" className="w-100 h-60 object-contain mb-8 img-ring"/>
       </p>
       
 
