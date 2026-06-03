@@ -8,6 +8,7 @@ import VenueSection from './components/VenueSection'
 import GiftSection from './components/GiftSection'
 import CountdownSection from './components/CountdownSection'
 import Footer from './components/Footer'
+import MusicToggle from './components/MusicToggle'
 import { translations } from './translations'
 
 // ══ Tadbir sanasi / Дата события ══
@@ -18,6 +19,18 @@ export default function App() {
   const [lang, setLang]         = useState('uz')   // 'uz' yoki 'ru'
   const [phase, setPhase]       = useState('locked') // 'locked' | 'opening' | 'open'
   const audioRef                = useRef(null)
+  const [isMusicOn, setIsMusicOn] = useState(false)
+
+const toggleMusic = () => {
+  if (!audioRef.current) return
+  if (isMusicOn) {
+    audioRef.current.pause()
+    setIsMusicOn(false)
+  } else {
+    audioRef.current.play().catch(() => {})
+    setIsMusicOn(true)
+  }
+}
 
   const t = translations[lang]
 
@@ -33,7 +46,7 @@ export default function App() {
         // Brauzер autoplay ni bloklagan bo'lsa, foydalanuvchi o'zi yoqadi
       })
     }
-
+      setIsMusicOn(true) 
     // Animatsiya tugagandan keyin to'liq ochish
     setTimeout(() => setPhase('open'), 1600)
   }
@@ -69,6 +82,7 @@ export default function App() {
           style={{ opacity: phase === 'open' ? 1 : 0 }}
         >
           <LanguageSwitcher lang={lang} setLang={setLang} />
+          <MusicToggle isOn={isMusicOn} onToggle={toggleMusic} />
           <Hero t={t} />
           <InvitationText t={t} />
           <CalendarSection t={t} />
